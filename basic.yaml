@@ -1,0 +1,59 @@
+# Training seed.
+seed: 20221101
+verbose: True
+
+trainer:
+  # Early Stopping
+  early_stopping:
+    # Quantity to monitor
+    # choices = ("train_acc", "val_acc", "train_f1", "val_f1")
+    monitor: val_f1
+    # Number of times with no improvement after which training will be stopped
+    patience: 20
+    # if we want to min/max the monitored quantity.
+    # choices = ("auto", "min", "max")
+    metric_mode: max
+    verbose: ${verbose}
+  # Model Checkpoint
+  checkpoint:
+    # The best k models according to the quantity monitored will be saved.
+    filename: '{step:d}-{train_f1:.4f}-{val_f1:.4f}'
+    monitor: ${..early_stopping.monitor}
+    mode: ${..early_stopping.metric_mode}
+    # if ``save_top_k == k``,
+    #   the best k models according to the quantity monitored will be saved.
+    # if ``save_top_k == 0``, no models are saved.
+    # if ``save_top_k == -1``, all models are saved.
+    save_top_k: 1
+    # every_n_train_steps: 100
+    verbose: ${verbose}
+  # Limits training to a minimum number of epochs
+  min_epochs: 1
+  # Limits training to a maximum number of epochs
+  max_epochs: 50
+  # If you do not want to use the entire dev set (for debugging or if it is huge)
+  # set how much of the dev set you want to use with this flag
+  val_check_interval: 0.05
+  gradient_clip_val: 5.0
+
+model:
+  optimization:
+    lr: 1.0e-4
+
+    scheduler:
+      factor: 0.8
+      patience: 10
+      verbose: ${verbose}
+      min_lr: 1.0e-5
+
+  dropout: 0.3
+  max_length: ${data.max_seq_length}
+  n_labels: 5
+  model_name_or_path: D:\0pythonWS\0Latest\brc\biobert
+
+data:
+  model_name_or_path: ${model.model_name_or_path}
+  data_dirpath: ./data/datasets/nary/processed/all/drug_gene_var/cv0
+  max_seq_length: 512
+  train_batch_size: 2
+  eval_batch_size: 2

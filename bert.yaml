@@ -1,0 +1,46 @@
+# Training seed.
+seed: 20221001
+# The best k models according to the quanity monitored will be saved.
+save_top_k: 1
+
+# Early Stopping
+# Quantity to monitor
+monitor: val_f1
+# if we want to min/max the monitored quantity.
+# choices = ("auto", "min", "max")
+metric_mode: max
+# Number of epochs with no improvement after which training will be stopped.
+patience: 3
+# Limits training to a minimum number of epochs
+min_epochs: 1
+# Limits training to a maximum number of epochs
+max_epochs: 50
+# If you do not want to use the entire dev set (for debugging or if it is huge)
+# set how much of the dev set you want to use with this flag
+val_check_interval: 1.0
+
+# -----------------------
+# MODEL
+# -----------------------
+# optimization
+lr: 0.001
+gamma: 0.0
+gradient_clip_val: 5.0
+# model structure
+dropout: 0.3
+max_length: ${max_seq_length}
+n_labels: 5
+
+# -----------------------
+# DATASET
+# -----------------------
+model_name_or_path: bert
+data_dirpath: ./data/datasets/nary/processed/all/drug_gene_var/cv0/
+max_seq_length: 512
+train_batch_size: 2
+eval_batch_size: 2
+
+# -----------------------
+# model
+# -----------------------
+bert_path: D:\0pythonWS\bert_relation_classification\biobert
