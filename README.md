@@ -1,0 +1,10 @@
+项目目录
+模型biobert
+data:数据
+hyparams：每个的超参
+scripts：每个sh运行的
+src:
+  dataset:数据集处理
+  data:通用数据预处理
+  models:模型
+main.py:主函数
